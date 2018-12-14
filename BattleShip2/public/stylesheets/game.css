@@ -1,0 +1,162 @@
+body{
+  margin: 2%;
+}
+
+.game-title h1{
+  text-align: center;
+  font-style: italic;
+  font-size: 100px;
+}
+
+.main{ 
+  margin:0% auto;
+  border: 1px red dashed;
+}
+
+      /* Table Stylling */
+
+.table{
+  max-width: 500px;
+  width: 100%; 
+  max-height: 500px;
+  height: 100%;
+  margin: 1%;
+  position: fixed;
+  display: table;
+}
+
+.player-table{left: 20%;}
+.oponent-table{right: 20%;} 
+
+.table-row{
+  display: table-row;
+}
+.table-cell{
+  width: 50px;
+  height: 50px; 
+  border: 1px solid blue;
+  display: table-cell;
+  margin:3px;
+  transition: all 0.5s ease-in-out;
+  border-radius: 5px;
+  padding: 0 0 0 0px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+/* .table-cell:hover{
+  color: aqua;
+  background: rgba(37,88,228,0.7);
+  z-index: 2;
+  transition: translate(10px,-10px);
+  animation: solution 0.2s ease-in-out infinite alternate;
+} */
+
+
+.table-cell-tile{
+  width:100%;
+  height:100%;
+  border:1px solid rgb(172, 42, 42);
+  border-radius: 4px;
+  background: rgba(211, 19, 19, 0.808);
+  cursor: move;
+}
+
+
+
+        /* Available boats styling */
+ 
+.div-boats{
+  max-width: 200px;
+  max-height: 200px;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  /* top: 20%; */
+  /* border:1px solid green; */
+}
+.div-boats-row{
+  max-width: 200px;
+  max-height:50px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  /* border:1px dashed green; */
+}
+.div-boats-cell{
+  transition: all 0.5s ease-in-out;
+  border-radius: 5px;
+  border:1px solid darkcyan;
+  background: lightblue;
+}
+
+.div-boats-cell-row1{
+  width: 98%;
+  height: 92%;
+  margin: 0 auto;
+}
+.div-boats-cell-row2{
+  float: left;
+  width: 48%;
+  height: 92%;
+}
+.div-boats-cell-row3{
+  float: left;
+  width: 31.33%;
+  height: 92%;
+}
+
+.div-boats-cell-row4{
+  float: left;
+  width: 23%;
+  height: 92%;
+}
+
+.div-boats.div-boats-player{
+  border:0px solid blueviolet;
+  left: 7%;
+}
+.div-boats.div-boats-oponent{
+  border:0px solid brown;
+  right: 7%;
+}
+
+img{
+  width: 200px;
+  height: 50px;
+}
+
+form {
+  margin: 0;
+  padding: 0;
+}
+
+input {
+  font:12px arial;
+}
+
+.chat {
+  margin: 0 auto;
+  padding-bottom: 25px;
+  background: #ebf4fb;
+  width: 504px;
+  border: 1px solid #acd8f0;
+}
+
+.chatbox {
+  text-align: left;
+  margin: 0 auto;
+  margin-bottom: 25px;
+  padding: 10px;
+  background: #fff;
+  height: 270px;
+  width: 430px;
+  border: 1px solid #acd8f0;
+  overflow: auto; 
+}
+
+.usermsg {
+  width: 395;
+  border: 1px solid #acd8f0;  
+}
+
