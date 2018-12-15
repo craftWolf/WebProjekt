@@ -1,0 +1,57 @@
+body{
+    margin: 2%;
+  }
+  
+  .game-title h1{
+    text-align: center;
+    font-style: italic;
+    font-size: 100px;
+    animation: color-change 3s infinite;
+  }
+  
+  
+  
+  .share {
+      width: 250px;
+  }
+  
+  .form-group {
+      margin: auto;
+      width: 20%;
+        padding: 10px;
+      position: absolute;
+      left: 40%;
+      top: 80%;
+      text-align: left;
+  }
+  
+  
+  .play {
+      margin: auto;
+      width: 10%;
+      padding: 5px;
+      position: absolute;
+      left: 45%;
+      top: 50%;
+  
+  }
+  
+  a {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 40px;
+      text-decoration: none;	
+  }
+  
+  .games {
+      margin: auto;
+      position: absolute;
+      left: 10%;
+      bottom: 10%;
+  }
+  
+  .players {
+      margin: auto;
+      position: absolute;
+      right: 10%;
+      bottom: 10%;
+  }
