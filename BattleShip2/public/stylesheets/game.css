@@ -6,6 +6,20 @@ body{
   text-align: center;
   font-style: italic;
   font-size: 100px;
+  color: red;
+  animation: color-change 3s infinite;
+ /* animation-duration: 10s;
+  animation-name: example;
+}
+@keyframes example {
+  from {color: red;}
+  to {color: yellow;}*/
+}
+
+@keyframes color-change{
+  0% {color: red;}
+  50% {color: blue;}
+  100% {color: red;}
 }
 
 .main{ 
@@ -25,8 +39,8 @@ body{
   display: table;
 }
 
-.player-table{left: 20%;}
-.oponent-table{right: 20%;} 
+.player-table{left: 10%;}
+.oponent-table{right: 40%;} 
 
 .table-row{
   display: table-row;
@@ -50,7 +64,12 @@ body{
   z-index: 2;
   transition: translate(10px,-10px);
   animation: solution 0.2s ease-in-out infinite alternate;
-} */
+} 
+
+.table-cell-tile.over {
+  border: 2px dashed violet;
+}
+*/
 
 
 .table-cell-tile{
@@ -114,11 +133,16 @@ body{
 
 .div-boats.div-boats-player{
   border:0px solid blueviolet;
-  left: 7%;
+  position: fixed;
+  left: 15%;
+  bottom: 2%;
 }
+
 .div-boats.div-boats-oponent{
   border:0px solid brown;
-  right: 7%;
+  position: fixed;
+  left: 45%;
+  bottom: 2%;
 }
 
 img{
@@ -141,6 +165,9 @@ input {
   background: #ebf4fb;
   width: 504px;
   border: 1px solid #acd8f0;
+  position: fixed;
+  right: 10%;
+  top: 30%;
 }
 
 .chatbox {
@@ -160,3 +187,16 @@ input {
   border: 1px solid #acd8f0;  
 }
 
+.you {
+  position: fixed;
+  left: 30%;
+  bottom: 10%;
+  font-size: 40;
+}
+
+.opponent {
+  position: fixed;
+  left: 60%;
+  bottom: 10%;
+  font-size: 40;
+}

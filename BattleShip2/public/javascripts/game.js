@@ -45,13 +45,13 @@ function cell(x,y){
             let $elem =  document.querySelectorAll(pathToX(that.Xposition)+pathToY(that.Yposition))[0].querySelector("div");
             $elem.addEventListener("click",function(){
                 console.log($elem);
-                that.isClicked = true;
-                if (that.isClicked) {
+                if (that.isClicked) {that.isClicked = false;}
+                else (that.isClicked = true)
+            
                 console.log("cell x:%d y:%d",that.Xposition,that.Yposition)
-                // console.log(that.isClicked);
+                console.log(that.isClicked);
                 // console.log("yes");
-                }
-                else console.log("no"); 
+
             })
         }
     }else alert("invalid position to create cell")
@@ -88,11 +88,6 @@ function boat(size){
                 }
             })
         },10)
-    }
-    this.boatMove = function(that){
-        that.bodyBoat.forEach(function(item){
-            item.my
-        })
     }
 }
 
@@ -236,3 +231,31 @@ myFunc3();
 // boat2.boatClicked(boat2);
 
 
+
+function drop(ev) {
+    ev.preventDefault();
+    let data = ev.dataTransfer.getData("text");
+
+    boatsCollector.forEach(element => {
+        element.bodyBoat.forEach(elem => {
+            // console.log(`${data}`, elem);
+            if (elem.id.match(/\d+/g).map(Number)[0] === data.match(/\d+/g).map(Number)[0]) {
+                // ev.dataTransfer.setData("text", elem.id);
+                console.log(`data: ${data}`, ` data match: ${data.match(/\d+/g).map(Number)[0]}`);
+                console.log(`elem.id: ${elem.id}`, ` elem.id match: ${elem.id.match(/\d+/g).map(Number)[0]}`);
+
+                ev.target.appendChild(document.getElementById(elem.id));
+                let father =  document.getElementById(elem.id).parentElement;
+                let obj = document.getElementById(elem.id).myobj;
+                console.log("Magic happens");
+            }
+        });
+    });
+    // let data = ev.dataTransfer.getData("text");
+    // ev.target.appendChild(document.getElementById(data));
+    // CREATING THE OBJECT TO BE PASSED && ITS PARENT TO READ THE NEW POSSITION
+    // let father =  document.getElementById(data).parentElement;
+    // let obj = document.getElementById(data).myobj;
+    // CALLING TO UPDATE THE POSITION
+    myFunc4(father.getAttribute("data-x"),father.getAttribute("data-y"),obj);
+}
