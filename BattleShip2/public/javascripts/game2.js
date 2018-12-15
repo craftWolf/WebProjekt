@@ -165,71 +165,71 @@ function boat(size){
     }
     this.boatClicked = function(that){
         let displayed = false;
-        that.bodyBoat.forEach(function(item){
-            let $n = document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition))[0].querySelector("div");
-            $n.onchange=function(){console.log("ye ")}
-            if (item.isClicked){
-            console.log(item);
-            }
-        }
-        )
+        // that.bodyBoat.forEach(function(item){
+        //     let $n = document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition))[0].querySelector("div");
+        //     $n.onchange=function(){console.log("ye ")}
+        //     if (item.isClicked){
+        //     console.log(item);
+        //     }
+        // }
+        // )
 
 
-        // setInterval(function(){
-        //     that.bodyBoat.forEach(function(item){
-        //         if (item.isClicked) {
+        setInterval(function(){
+            that.bodyBoat.forEach(function(item){
+                if (item.isClicked) {
                     
-        //             let move = false;
+                    let move = false;
 
-        //             //  MOVE UP
-        //             window.addEventListener("keypress", function(event) {
-        //                 if ((event.code.toLocaleLowerCase() === 'keyw')) {
-        //                     if (!displayed){
-        //                     // console.log("up")
-        //                     moveUp(that);
-        //                     displayed=true;
-        //                     }
-        //                 }
-        //             })
+                    //  MOVE UP
+                    window.addEventListener("keypress", function(event) {
+                        if ((event.code.toLocaleLowerCase() === 'keyw')) {
+                            if (!displayed){
+                            // console.log("up")
+                            moveUp(that);
+                            displayed=true;
+                            }
+                        }
+                    })
 
-        //             // MOVE DOWN
-        //             window.addEventListener("keypress", function(event) {
-        //                 if ((event.code.toLocaleLowerCase() === 'keys')) {
-        //                     if (!displayed){
-        //                     // console.log("down");
-        //                     moveDown(that);
-        //                     displayed=true;
-        //                     }
-        //                 }
-        //             })
+                    // MOVE DOWN
+                    window.addEventListener("keypress", function(event) {
+                        if ((event.code.toLocaleLowerCase() === 'keys')) {
+                            if (!displayed){
+                            // console.log("down");
+                            moveDown(that);
+                            displayed=true;
+                            }
+                        }
+                    })
 
-        //             // MOVE TO RIGHT
-        //             window.addEventListener("keypress", function(event) {
-        //                 if ((event.code.toLocaleLowerCase() === 'keya')) {
-        //                     if (!displayed){
-        //                     // console.log("left");
-        //                     moveLeft(that);
-        //                     displayed=true;
-        //                     }
-        //                 }
-        //             })
+                    // MOVE TO RIGHT
+                    window.addEventListener("keypress", function(event) {
+                        if ((event.code.toLocaleLowerCase() === 'keya')) {
+                            if (!displayed){
+                            // console.log("left");
+                            moveLeft(that);
+                            displayed=true;
+                            }
+                        }
+                    })
 
-        //             // MOVE TO LEFT
-        //             window.addEventListener("keypress", function(event) {
-        //                 if ((event.code.toLocaleLowerCase() === 'keyd')) {
-        //                     if (!displayed){
-        //                     // console.log("right");
-        //                     moveRight(that);
-        //                     displayed=true;
-        //                     }
-        //                 }
-        //             })
-        //             displayed=false;
-        //             that.boatIsClicked = true;
-        //         }
-        //         else{}
-        //     })
-        // },100)
+                    // MOVE TO LEFT
+                    window.addEventListener("keypress", function(event) {
+                        if ((event.code.toLocaleLowerCase() === 'keyd')) {
+                            if (!displayed){
+                            // console.log("right");
+                            moveRight(that);
+                            displayed=true;
+                            }
+                        }
+                    })
+                    displayed=false;
+                    that.boatIsClicked = true;
+                }
+                else{}
+            })
+        },100)
     }
 }
 
