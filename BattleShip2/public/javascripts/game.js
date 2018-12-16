@@ -14,7 +14,8 @@ function myFunc3(){
         for(var j=0;j<10;j++){
             let pathx = "[data-x=\'"+i+"\']";
             let pathy = "[data-y=\'"+j+"\']";
-            document.querySelector(pathx+pathy).setAttribute('id',i+""+j);
+            document.querySelectorAll(pathx+pathy)[0].setAttribute('id',i+""+j);
+            document.querySelectorAll(pathx+pathy)[1].setAttribute('id',i+""+j+"-op");
 
         }
     }
@@ -33,9 +34,9 @@ function myFunc4(that,value){
         
     })
     else{
-        // window.addEventListener("keypress", function (event) {
-        // event.stopPropagation();
-        // }, true);
+        window.addEventListener("keypress", function (event) {
+        event.stopPropagation();
+        }, true);
     }
 }
 
@@ -52,6 +53,8 @@ function setAllCells(that,value){
 function moveUp(ship){
 console.log("move up");
     ship.bodyBoat.forEach(function(item){
+        if((item.Yposition>0)){
+        console.log("Valid move Y"+item.Yposition)
         let $n =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition))[0].querySelector("div");
         console.log($n);
         let $prevParent = document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition))[0];
@@ -60,6 +63,10 @@ console.log("move up");
         $n.myobj.Yposition--;
         console.log($newParent);
         $newParent.append($n);
+        }
+        else{
+            console.log("no more move Y="+item.Yposition);
+        }
     })
 }
 
@@ -67,6 +74,8 @@ console.log("move up");
 function moveDown(ship){
 console.log("move down");
     ship.bodyBoat.forEach(function(item){
+        if((item.Yposition<9)) {
+        console.log("valid move Y"+item.Yposition)
         let $n =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition))[0].querySelector("div");
         console.log($n);
         let $prevParent = document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition))[0];
@@ -75,12 +84,16 @@ console.log("move down");
         $n.myobj.Yposition++;
         console.log($newParent);
         $newParent.append($n);
+        }else{
+            console.log("no more move down Y"+item.Yposition);
+        }
     })
 }
 
 // MOVE LEFT FUNTION
 function moveLeft(ship){
 console.log("move left");
+    if(ship.bodyBoat[0].Xposition>0){
     ship.bodyBoat.forEach(function(item){
         let $n =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition))[0].querySelector("div");
         console.log($n);
@@ -91,11 +104,15 @@ console.log("move left");
         console.log($newParent);
         $newParent.append($n);
     })
+    }else{
+        console.log("no valid move X"+ship.bodyBoat[0].Xposition);
+    }
 }
 
 // MOVE RIGHT FUNCTIONS
 function moveRight(ship){
 console.log("move right");
+    if(ship.bodyBoat[ship.size-1].Xposition<9){
     ship.bodyBoat.forEach(function(item){
         let $n =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition))[0].querySelector("div");
         console.log($n);
@@ -106,7 +123,56 @@ console.log("move right");
         console.log($newParent);
         $newParent.append($n);
     })
+    }else{
+        console.log("no valid move X"+ship.bodyBoat[ship.size-1].Xposition);
+    }
 
+}
+
+//The followin 2 {} are me trying ToDo a valid move 
+{
+// function validMoveUp(ship){
+//     let valid =true;
+//     if(ship.bodyBoat[0].Yposition-2>=0){
+//         ship.bodyBoat.forEach(function(item){
+//             let $elemUp1 =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition-1))[0];
+//             let $elemUp2 =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition-2))[0];
+//             console.log($elemUp1);
+//             console.log($elemUp2);
+//             if (($elemUp1.hasChildNodes())||($elemUp2.hasChildNodes())){
+//                 valid = !valid;
+//             }
+//         })
+//     }else return true;
+//     return valid;
+// }
+}
+{
+// function validMove(ship){
+//     let valid = true
+//     // check the UPPER position
+//     ship.bodyBoat.forEach(function(item){
+//         let $elemUp =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition-2))[0];
+//         if($elemUp.hasChildNodes()) {valid=false; console.log("up nope")};
+//     })
+//     if(!valid) return false;
+
+//     //check the LOWER position
+//     ship.bodyBoat.forEach(function(item){
+//         let $elemDown =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition+2))[0];
+//         if($elemDown.hasChildNodes()) {valid=false; console.log("down nope")};
+//     })
+//     if(!valid) return false;
+
+
+//     //check the leftEXTREME
+
+//     //check the rightEXTREME
+
+//     //THE END of the check , the move is Valid
+//     return true;
+
+// }
 }
 
 
@@ -118,6 +184,8 @@ console.log("move right");
 // 1 unit of the boat
 // !!!!!!!!!!!!!!!!!!! EVERY CELL MUST HAVE AN UNIQUE ID 
 // THE ID by default is : joke
+
+
 function cell(x,y){
     if (!(x>9)&&!(y>9)&&!(y<0)&&!(x<0)) {
         this.Xposition=x;
@@ -141,8 +209,7 @@ function cell(x,y){
         }
     }else alert("invalid position to create cell")
 }
-
-
+//Creating the BOAT
 function boat(size){
     this.size = size;
     this.type = "";
@@ -190,31 +257,8 @@ function ready() {
     return true;
   }
 
+// POST READY STATE
 
-
-// WEB
-
-function setup() {
-    socket = new WebSocket(Setup.WEB_SOCKET_URL);
-    gamestate = new GameState(socket);
-  
-    socket.onmessage = function (event) {
-      let msg = JSON.parse(event.data);
-      //console.log(incomingMsg);
-      console.log(msg);
-    }
-  
-    // socket.onopen = function () {
-    //   socket.send("{}");
-    // };
-  }
-  
-  function GameState(socket) {
-    this.socket = socket;
-    this.sendmsg = function(message) {
-      this.socket.send(message);
-    }
-  }
 
 
 
@@ -249,6 +293,6 @@ boatArray.push(boat21);
 boatArray.forEach(function(item){
     item.boatClicked(item);
 })
+
+ready()
 }
-setup();
-ready();
