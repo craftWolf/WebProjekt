@@ -14,19 +14,38 @@ function myFunc3(){
         for(var j=0;j<10;j++){
             let pathx = "[data-x=\'"+i+"\']";
             let pathy = "[data-y=\'"+j+"\']";
-            document.querySelector(pathx+pathy).setAttribute("onclick","");
             document.querySelector(pathx+pathy).setAttribute('id',i+""+j);
-            //  FOR THE DROP EVENT 
-            //REQUIREMENT
-            document.querySelector(pathx+pathy).setAttribute("ondrop","drop(event)");
-            document.querySelector(pathx+pathy).setAttribute("ondragover","allowDrop(event)");
 
-            //ADDITIONAL ???
         }
     }
 }
 
+// TODO remove the eventListener
+function myFunc4(that,value){
+    if (value)
+    document.addEventListener("keypress", function(event) {
+        switch(event.code.toLocaleLowerCase()){
+            case"keyw":moveUp(that);break;
+            case"keys":moveDown(that);break;
+            case"keya":moveLeft(that);break;
+            case"keyd":moveRight(that);break;
+        }
+        
+    })
+    else{
+        // window.addEventListener("keypress", function (event) {
+        // event.stopPropagation();
+        // }, true);
+    }
+}
 
+
+// pass an array
+function setAllCells(that,value){
+    that.forEach(function(item){
+        item.isClicked=value;
+    })
+}
 
 
 // MOVE UP FUNCTION
@@ -114,33 +133,11 @@ function cell(x,y){
             
             // assigning the JS object to the DOM-Element representation 
             $n.myobj = this;
-            // console.log($n.myobj);
 
             // ADDING IT TO DOM
             let x = pathToX(this.Xposition)+pathToY(this.Yposition);
-            // console.log(x)
             let $elem =  document.querySelectorAll(x)[0];
             $elem.append($n);            
-        }
-        this.cellClicked = function(that){
-            let $elem =  document.querySelectorAll(pathToX(that.Xposition)+pathToY(that.Yposition))[0].querySelector("div");
-            $elem.addEventListener("click",function(){
-                if (that.isClicked) {
-                    that.isClicked = false;
-                    console.log("click canceled");                    
-                }
-                else {
-                    that.isClicked = true;
-                    console.log("click started");
-                }
-
-                // console.log("cell x:%d y:%d",that.Xposition,that.Yposition)
-                // console.log(that.isClicked);
-                // console.log($elem.getBoundingClientRect());// use to display the absoulute position 
-
-                // console.log("yes");
-
-            })
         }
     }else alert("invalid position to create cell")
 }
@@ -150,9 +147,6 @@ function boat(size){
     this.size = size;
     this.type = "";
     this.boatIsClicked=false;
-    this.setType = function(type){this.type=type};
-    this.getType = function(){return this.type};
-    this.getSize = function(){return this.size};
     this.bodyBoat = new Array(this.size);
     this.createBody = function(x,y){
         for(var i=0;i<this.bodyBoat.length;i++){
@@ -160,101 +154,101 @@ function boat(size){
           this.bodyBoat[i].inBoatPosition=i;
           this.bodyBoat[i].id = "ship:"+this.size+"_cell:"+i;
           this.bodyBoat[i].createCell(x+i,y)
-          this.bodyBoat[i].cellClicked(this.bodyBoat[i])
         }
     }
     this.boatClicked = function(that){
-        let displayed = false;
-        // that.bodyBoat.forEach(function(item){
-        //     let $n = document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition))[0].querySelector("div");
-        //     $n.onchange=function(){console.log("ye ")}
-        //     if (item.isClicked){
-        //     console.log(item);
-        //     }
-        // }
-        // )
-
-
-        setInterval(function(){
-            that.bodyBoat.forEach(function(item){
+        that.bodyBoat.forEach( function(item){
+            let $elem =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition))[0].querySelector("div");
+            $elem.addEventListener("click",function(){
                 if (item.isClicked) {
-                    
-                    let move = false;
-
-                    //  MOVE UP
-                    window.addEventListener("keypress", function(event) {
-                        if ((event.code.toLocaleLowerCase() === 'keyw')) {
-                            if (!displayed){
-                            // console.log("up")
-                            moveUp(that);
-                            displayed=true;
-                            }
-                        }
-                    })
-
-                    // MOVE DOWN
-                    window.addEventListener("keypress", function(event) {
-                        if ((event.code.toLocaleLowerCase() === 'keys')) {
-                            if (!displayed){
-                            // console.log("down");
-                            moveDown(that);
-                            displayed=true;
-                            }
-                        }
-                    })
-
-                    // MOVE TO RIGHT
-                    window.addEventListener("keypress", function(event) {
-                        if ((event.code.toLocaleLowerCase() === 'keya')) {
-                            if (!displayed){
-                            // console.log("left");
-                            moveLeft(that);
-                            displayed=true;
-                            }
-                        }
-                    })
-
-                    // MOVE TO LEFT
-                    window.addEventListener("keypress", function(event) {
-                        if ((event.code.toLocaleLowerCase() === 'keyd')) {
-                            if (!displayed){
-                            // console.log("right");
-                            moveRight(that);
-                            displayed=true;
-                            }
-                        }
-                    })
-                    displayed=false;
-                    that.boatIsClicked = true;
+                    item.isClicked = false;
+                    console.log("click canceled"); 
+                    setAllCells(that.bodyBoat,false);      
+                    myFunc4(that,false)             
                 }
-                else{}
+                else {
+                    item.isClicked = true;
+                    console.log("click started");
+                    setAllCells(that.bodyBoat,true);
+                    myFunc4(that,true);                
+                }
             })
-        },100)
+        })
     }
 }
 
 
+function ready() {
+    //create ready button
+    var btn = document.createElement("BUTTON");
+    var t = document.createTextNode("READY");
+    $(btn).attr('onclick', 'startgame()');    // ready onclick calls setup() function
+    btn.appendChild(t);
+    document.getElementById("ready").appendChild(btn);
+    //remove rotate box, ships 
+   
+    return true;
+  }
 
 
 
+// WEB
 
+function setup() {
+    socket = new WebSocket(Setup.WEB_SOCKET_URL);
+    gamestate = new GameState(socket);
+  
+    socket.onmessage = function (event) {
+      let msg = JSON.parse(event.data);
+      //console.log(incomingMsg);
+      console.log(msg);
+    }
+  
+    // socket.onopen = function () {
+    //   socket.send("{}");
+    // };
+  }
+  
+  function GameState(socket) {
+    this.socket = socket;
+    this.sendmsg = function(message) {
+      this.socket.send(message);
+    }
+  }
 
 
 
 // The ExecutTIon of the Program
-
+{
 console.log("hi");
 myFunc3();
 
-let cell1 = new cell(1,1);
-cell1.createCell();
-cell1.cellClicked(cell1);
+let boatArray = [];
 
-let boat1 = new boat(4);
-boat1.createBody(3,3);
-boat1.boatClicked(boat1);
+let boat51 = new boat(5);
+boat51.createBody(0,0);
+boatArray.push(boat51);
 
-let boat2 = new boat(3);
-boat2.createBody(5,6);
-boat2.boatClicked(boat2);
 
+let boat41 = new boat(4);
+boat41.createBody(0,2);
+boatArray.push(boat41);
+
+let boat31 =  new boat(3);
+boat31.createBody(0,4);
+boatArray.push(boat31);
+
+let boat32 = new boat(3);
+boat32.createBody(5,4);
+boatArray.push(boat32);
+
+let boat21 = new boat(2);
+boat21.createBody(0,6);
+boatArray.push(boat21);
+
+boatArray.forEach(function(item){
+    item.boatClicked(item);
+})
+}
+setup();
+ready();

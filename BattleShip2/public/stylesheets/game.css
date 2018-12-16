@@ -200,3 +200,9 @@ input {
   bottom: 10%;
   font-size: 40;
 }
+
+#ready{
+  position: fixed;
+  left:35%;
+
+}
