@@ -1,3 +1,6 @@
+var boatArray = [];
+
+
 // My custom FUNCTIONS
 
 //  FUNTIONS THAT gives THE ATRIBUTE *data-x & data-y
@@ -229,12 +232,14 @@ function boat(size){
             $elem.addEventListener("click",function(){
                 if (item.isClicked) {
                     item.isClicked = false;
+                    that.boatIsClicked = false;
                     console.log("click canceled"); 
                     setAllCells(that.bodyBoat,false);      
                     myFunc4(that,false)             
                 }
                 else {
                     item.isClicked = true;
+                    that.boatIsClicked = true;
                     console.log("click started");
                     setAllCells(that.bodyBoat,true);
                     myFunc4(that,true);                
@@ -249,7 +254,7 @@ function ready() {
     //create ready button
     var btn = document.createElement("BUTTON");
     var t = document.createTextNode("READY");
-    $(btn).attr('onclick', 'startgame()');    // ready onclick calls setup() function
+    $(btn).attr('onclick', 'readyStart()');    // ready onclick calls setup() function
     btn.appendChild(t);
     document.getElementById("ready").appendChild(btn);
     //remove rotate box, ships 
@@ -257,42 +262,71 @@ function ready() {
     return true;
   }
 
-// POST READY STATE
 
 
 
+//PRE READY STATE
 
-// The ExecutTIon of the Program
-{
+//prepare the boatArray
+function preReady(){
 console.log("hi");
 myFunc3();
 
-let boatArray = [];
 
-let boat51 = new boat(5);
+var boat51 = new boat(5);
 boat51.createBody(0,0);
 boatArray.push(boat51);
 
 
-let boat41 = new boat(4);
+var boat41 = new boat(4);
 boat41.createBody(0,2);
 boatArray.push(boat41);
 
-let boat31 =  new boat(3);
+var boat31 =  new boat(3);
 boat31.createBody(0,4);
 boatArray.push(boat31);
 
-let boat32 = new boat(3);
+var boat32 = new boat(3);
 boat32.createBody(5,4);
 boatArray.push(boat32);
 
-let boat21 = new boat(2);
+var boat21 = new boat(2);
 boat21.createBody(0,6);
 boatArray.push(boat21);
 
 boatArray.forEach(function(item){
     item.boatClicked(item);
 })
-
-ready()
+ready();
 }
+
+
+// POST READY STATE
+
+
+
+// after Ready is Pressed
+function readyStart(){
+    document.getElementById("ready").remove();
+    console.log("GO");
+    console.log(boatArray);
+    //Stop any Event Listener
+    boatArray.forEach(function(item){
+        myFunc4(item,false);
+        item.bodyBoat.forEach(function(item2){
+            let it = document.querySelectorAll(pathToX(item2.Xposition)+pathToY(item2.Yposition))[0];
+            it.addEventListener("click",function(event){
+                event.stopPropagation();
+            },true);
+            
+
+        })
+    })
+
+}
+
+// The ExecutTIon of the Program
+preReady();
+console.log(boatArray);
+
+
