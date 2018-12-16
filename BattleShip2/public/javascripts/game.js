@@ -1,4 +1,19 @@
 var boatArray = [];
+var iAmPlayer = null;
+var myTurn = null;
+function GameState(socket) {
+    this.socket = socket;
+    this.sendmsg = function(message) {
+      this.socket.send(message);
+    }
+}
+
+function setup() {
+    socket = new WebSocket(Setup.WEB_SOCKET_URL);
+    gamestate = new GameState(socket);
+    
+    myResponse();
+}
 
 
 // My custom FUNCTIONS
@@ -43,6 +58,45 @@ function myFunc4(that,value){
     }
 }
 
+// Stop any eventListener on PlayerSide
+function myFunc5(){
+    boatArray.forEach(function(item){
+        myFunc4(item,false);
+        item.bodyBoat.forEach(function(item2){
+            let it = document.querySelectorAll(pathToX(item2.Xposition)+pathToY(item2.Yposition))[0];
+            it.addEventListener("click",function(event){
+                event.stopPropagation();
+            },true);
+            
+
+        })
+    })
+}
+
+function myResponse(){
+    socket.onmessage = function (event) {
+        let msg = JSON.parse(event.data);
+        if (iAmPlayer == null){
+            iAmPlayer = msg.data;
+            if(iAmPlayer =="A") myTurn=true;
+            else myTurn=false;
+        }
+        if(msg.isMyTurn) myTurn=true;
+        console.log(msg.shotId);
+    }
+}
+
+
+function sendIt(item){
+
+    let a ={
+        isMyTurn:true,
+        shotId: item.id
+    }
+    let ahit = JSON.stringify(a);
+    gamestate.sendmsg(ahit)
+}
+
 
 // pass an array
 function setAllCells(that,value){
@@ -50,7 +104,6 @@ function setAllCells(that,value){
         item.isClicked=value;
     })
 }
-
 
 // MOVE UP FUNCTION
 function moveUp(ship){
@@ -249,7 +302,7 @@ function boat(size){
     }
 }
 
-
+// Creating the ReadyButton
 function ready() {
     //create ready button
     var btn = document.createElement("BUTTON");
@@ -263,13 +316,11 @@ function ready() {
 }
 
 
-
-
 //PRE READY STATE
 
 //prepare the boatArray
 function preReady(){
-console.log("hi");
+console.log("Welcome");
 myFunc3();
 
 
@@ -302,26 +353,13 @@ ready();
 
 
 // POST READY STATE
-
-
-
 // after Ready is Pressed
 function prepareStart(){
     document.getElementById("ready").remove();
     console.log("GO");
     console.log(boatArray);
     //Stop any Event Listener
-    boatArray.forEach(function(item){
-        myFunc4(item,false);
-        item.bodyBoat.forEach(function(item2){
-            let it = document.querySelectorAll(pathToX(item2.Xposition)+pathToY(item2.Yposition))[0];
-            it.addEventListener("click",function(event){
-                event.stopPropagation();
-            },true);
-            
-
-        })
-    })
+    myFunc5();
 
     let opCell = [].slice.call(document.getElementsByClassName("table-cell-oponent"));
     console.log(opCell);
@@ -329,24 +367,19 @@ function prepareStart(){
     opCell.forEach(function(item){
         item.myValue = false;
     })
+
     opCell.forEach(function(item){
         item.addEventListener("click",function(){
+            if(myTurn){
+            myTurn=!myTurn;
             if(item.myValue==false){
                 item.myValue = true;
                 console.log("I am clicked");
                 item.classList.add("iWasClicked");
-
-                let a ={
-                    messageType:"uShotMe",
-                    data: item.id
-                }
-                
-                let ahit = JSON.stringify(a);
-                gamestate.sendmsg(ahit)
-
+                sendIt(item);
             }else{
                 console.log("I was AlreadyClicked");
-            }
+            }}else{console.log("not my turn")}
         })
     })
 
@@ -354,32 +387,11 @@ function prepareStart(){
 
 }
 
-function GameState(socket) {
-    this.socket = socket;
-    this.sendmsg = function(message) {
-      this.socket.send(message);
-    }
-}
 
-function setup() {
-    socket = new WebSocket(Setup.WEB_SOCKET_URL);
-    gamestate = new GameState(socket);
-  
-    socket.onmessage = function (event) {
-      let msg = JSON.parse(event.data);
-      //console.log(incomingMsg);
-      console.log(msg);
-    }
-  
-    // socket.onopen = function () {
-    //   socket.send("{}");
-    // };
-  }
 
 
 
 // The ExecutTIon of the Program
 preReady();
-console.log(boatArray);
 
 

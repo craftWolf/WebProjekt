@@ -67,6 +67,7 @@ wss.on('connection', function connection(ws) {
   if (currentGame.hasTwoConnectedPlayers()) {
     currentGame = new Game(gameStatus.gamesInitialized++);
   }
+  
 
   con.on("message", function incoming(message) {
     let oMsg = JSON.parse(message);
