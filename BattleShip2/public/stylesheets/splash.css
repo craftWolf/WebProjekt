@@ -9,7 +9,11 @@ body{
     animation: color-change 3s infinite;
   }
   
-  
+  @keyframes color-change{
+  0% {color: red;}
+  50% {color: blue;}
+  100% {color: red;}
+}
   
   .share {
       width: 250px;

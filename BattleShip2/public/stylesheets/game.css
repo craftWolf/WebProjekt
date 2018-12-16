@@ -39,8 +39,8 @@ body{
   display: table;
 }
 
-.player-table{left: 10%;}
-.oponent-table{right: 40%;} 
+.player-table{left: 15%;}
+.oponent-table{left: 65%;} 
 
 .table-row{
   display: table-row;
@@ -141,15 +141,15 @@ body{
 .div-boats.div-boats-player{
   border:0px solid blueviolet;
   position: fixed;
-  left: 15%;
-  bottom: 2%;
+  left: 18%;
+  bottom: 12%;
 }
 
 .div-boats.div-boats-oponent{
   border:0px solid brown;
   position: fixed;
-  left: 45%;
-  bottom: 2%;
+  left: 68%;
+  bottom: 12%;
 }
 
 img{
@@ -197,19 +197,20 @@ input {
 .you {
   position: fixed;
   left: 30%;
-  bottom: 10%;
+  bottom: 22%;
   font-size: 40;
 }
 
 .opponent {
   position: fixed;
-  left: 60%;
-  bottom: 10%;
+  left: 80%;
+  bottom: 22%;
   font-size: 40;
 }
 
 #ready{
   position: fixed;
-  left:35%;
+  left:50%;
+  top: 40%;
 
 }
