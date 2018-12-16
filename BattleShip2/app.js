@@ -76,7 +76,6 @@ wss.on('connection', function connection(ws) {
 
     if (isPlayerA) {
       gameObj.playerB.send(message);
-      gameObj.playerA.send(alert("me"))
     } else {
       gameObj.playerA.send(message);
     }

@@ -254,13 +254,13 @@ function ready() {
     //create ready button
     var btn = document.createElement("BUTTON");
     var t = document.createTextNode("READY");
-    $(btn).attr('onclick', 'readyStart()');    // ready onclick calls setup() function
+    $(btn).attr('onclick', 'prepareStart()');    // ready onclick calls setup() function
     btn.appendChild(t);
     document.getElementById("ready").appendChild(btn);
     //remove rotate box, ships 
    
     return true;
-  }
+}
 
 
 
@@ -306,7 +306,7 @@ ready();
 
 
 // after Ready is Pressed
-function readyStart(){
+function prepareStart(){
     document.getElementById("ready").remove();
     console.log("GO");
     console.log(boatArray);
@@ -323,7 +323,60 @@ function readyStart(){
         })
     })
 
+    let opCell = [].slice.call(document.getElementsByClassName("table-cell-oponent"));
+    console.log(opCell);
+    // Making the Oponents cell being Clicked no more than ones
+    opCell.forEach(function(item){
+        item.myValue = false;
+    })
+    opCell.forEach(function(item){
+        item.addEventListener("click",function(){
+            if(item.myValue==false){
+                item.myValue = true;
+                console.log("I am clicked");
+                item.classList.add("iWasClicked");
+
+                let a ={
+                    messageType:"uShotMe",
+                    data: item.id
+                }
+                
+                let ahit = JSON.stringify(a);
+                gamestate.sendmsg(ahit)
+
+            }else{
+                console.log("I was AlreadyClicked");
+            }
+        })
+    })
+
+    setup();
+
 }
+
+function GameState(socket) {
+    this.socket = socket;
+    this.sendmsg = function(message) {
+      this.socket.send(message);
+    }
+}
+
+function setup() {
+    socket = new WebSocket(Setup.WEB_SOCKET_URL);
+    gamestate = new GameState(socket);
+  
+    socket.onmessage = function (event) {
+      let msg = JSON.parse(event.data);
+      //console.log(incomingMsg);
+      console.log(msg);
+    }
+  
+    // socket.onopen = function () {
+    //   socket.send("{}");
+    // };
+  }
+
+
 
 // The ExecutTIon of the Program
 preReady();

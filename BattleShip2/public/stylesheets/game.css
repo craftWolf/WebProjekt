@@ -58,19 +58,23 @@ body{
   z-index: 1;
 }
 
-/* .table-cell:hover{
+ .table-cell:hover{
   color: aqua;
-  background: rgba(37,88,228,0.7);
+  background: rgba(37, 88, 228, 0.904);
   z-index: 2;
   transition: translate(10px,-10px);
   animation: solution 0.2s ease-in-out infinite alternate;
 } 
-
+/*
 .table-cell-tile.over {
   border: 2px dashed violet;
 }
 */
 
+.iWasClicked{
+  background: blueviolet;
+  border-radius: 5px;
+}
 
 .table-cell-tile{
   width:100%;
