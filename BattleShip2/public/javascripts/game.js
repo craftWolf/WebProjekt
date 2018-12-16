@@ -89,19 +89,41 @@ function iGotAMessage(){
         // WhoAmI
         if (iAmPlayer == null){
             iAmPlayer = msg.data;
+            console.log(iAmPlayer);
+            if(iAmPlayer =="B") {
+                sendIt3();
+                alert("Game started");
+            }
+        }
+
+        // The oponent is ready Both Players can start now
+        // PlayerA can make the first move after this if-statement
+        if(msg.enabled){
+            alert("Game started");
             if(iAmPlayer =="A") myTurn=true;
             else myTurn=false;
-            console.log(iAmPlayer);
-
         }
+
         if(msg.isMyTurn) myTurn=true;
         // Check if u hit a boat
         if(msg.shotId != null){
             if(didOpHitAnyBoat(msg.shotId)){
-                console.log("u shot smthg");
+                console.log("the oponent shot smthg");
+            }else{
+                let shot = msg.shotId.substring(0,2);
+                let $elem = document.getElementById(shot);
+                $elem.classList.add("iWasClicked");
+            
             };
         }
-        //if it was hitten mark it
+        //if it was hitten by the oponent  mark it on user board
+        if(msg.state=="hit"){
+            let $elem = document.getElementById(msg.where);
+            $elem.classList.add("wasHitten");
+            console.log("u did it");
+        }
+
+
 
     }
 }
@@ -117,17 +139,44 @@ function didOpHitAnyBoat(whatWasHit){
         aMessageToSend.wasHitten = idToCheck;
         let $elem = document.getElementById(idToCheck);
         $elem.childNodes[0].classList.add("wasHitten");
+        sendIt2(whatWasHit);
 
         return true;
     }else return false;
 }
 
+// it gets as input what u just cliked 
+// it sends the element u just clicked 
 function sendIt(item){
 
     aMessageToSend.shotId = item.id;
     
     let ahit = JSON.stringify(aMessageToSend);
     gamestate.sendmsg(ahit)
+}
+
+// item is an id
+// u send it when u made a succesuful hit
+function sendIt2(item){
+
+    let aMessageToSend2 = {
+        state: "hit",
+        where: item
+    }
+    
+    let ahit = JSON.stringify(aMessageToSend2);
+    gamestate.sendmsg(ahit)
+}
+// Notify that the gameIs Started by both Players
+function sendIt3(){
+
+    let aMessageToSend3 = {
+        enabled: true,
+    }
+
+    let ahit =JSON.stringify(aMessageToSend3);
+    gamestate.sendmsg(ahit)
+
 }
 
 

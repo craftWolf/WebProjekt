@@ -82,11 +82,12 @@ body{
   border:1px solid rgb(172, 42, 42);
   border-radius: 4px;
   background: rgba(211, 19, 19, 0.808);
-  cursor: move;
 }
 
 .wasHitten{
-  background: black;
+  background: rgba(0, 0, 0, 0.849);
+  border: 1px solid rgba(0, 0, 0, 0.685);
+  border-radius: 4px;
 }
 
 
