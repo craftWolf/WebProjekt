@@ -85,6 +85,9 @@ body{
   cursor: move;
 }
 
+.wasHitten{
+  background: black;
+}
 
 
         /* Available boats styling */

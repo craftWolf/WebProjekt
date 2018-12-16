@@ -1,6 +1,15 @@
 var boatArray = [];
+var availableCells = [];
 var iAmPlayer = null;
 var myTurn = null;
+
+let aMessageToSend ={
+    isMyTurn:true,
+    shotId: null,
+    wasHitten:null,
+}
+
+
 function GameState(socket) {
     this.socket = socket;
     this.sendmsg = function(message) {
@@ -12,7 +21,7 @@ function setup() {
     socket = new WebSocket(Setup.WEB_SOCKET_URL);
     gamestate = new GameState(socket);
     
-    myResponse();
+    iGotAMessage();
 }
 
 
@@ -64,6 +73,7 @@ function myFunc5(){
         myFunc4(item,false);
         item.bodyBoat.forEach(function(item2){
             let it = document.querySelectorAll(pathToX(item2.Xposition)+pathToY(item2.Yposition))[0];
+            availableCells.push(it.id);
             it.addEventListener("click",function(event){
                 event.stopPropagation();
             },true);
@@ -73,27 +83,50 @@ function myFunc5(){
     })
 }
 
-function myResponse(){
+function iGotAMessage(){
     socket.onmessage = function (event) {
         let msg = JSON.parse(event.data);
+        // WhoAmI
         if (iAmPlayer == null){
             iAmPlayer = msg.data;
             if(iAmPlayer =="A") myTurn=true;
             else myTurn=false;
+            console.log(iAmPlayer);
+
         }
         if(msg.isMyTurn) myTurn=true;
-        console.log(msg.shotId);
+        // Check if u hit a boat
+        if(msg.shotId != null){
+            if(didOpHitAnyBoat(msg.shotId)){
+                console.log("u shot smthg");
+            };
+        }
+        //if it was hitten mark it
+
     }
 }
 
 
+//!!!!!!!!!!!!!!!!!!!!! TO DO 
+function didOpHitAnyBoat(whatWasHit){
+    let idToCheck = whatWasHit.substring(0,2);
+    if (availableCells.includes(idToCheck)) { 
+        //remove the hitten cell-id from ARRAY 
+        
+        //include the hitten cell in the message
+        aMessageToSend.wasHitten = idToCheck;
+        let $elem = document.getElementById(idToCheck);
+        $elem.childNodes[0].classList.add("wasHitten");
+
+        return true;
+    }else return false;
+}
+
 function sendIt(item){
 
-    let a ={
-        isMyTurn:true,
-        shotId: item.id
-    }
-    let ahit = JSON.stringify(a);
+    aMessageToSend.shotId = item.id;
+    
+    let ahit = JSON.stringify(aMessageToSend);
     gamestate.sendmsg(ahit)
 }
 
@@ -348,6 +381,7 @@ boatArray.push(boat21);
 boatArray.forEach(function(item){
     item.boatClicked(item);
 })
+
 ready();
 }
 
@@ -359,6 +393,7 @@ function prepareStart(){
     console.log("GO");
     console.log(boatArray);
     //Stop any Event Listener
+    // Adds all boat cells-id to availableCells
     myFunc5();
 
     let opCell = [].slice.call(document.getElementsByClassName("table-cell-oponent"));
@@ -370,16 +405,16 @@ function prepareStart(){
 
     opCell.forEach(function(item){
         item.addEventListener("click",function(){
-            if(myTurn){
-            myTurn=!myTurn;
-            if(item.myValue==false){
-                item.myValue = true;
+            if(myTurn){                     // if IT is my turn then ok 
+            myTurn=!myTurn;                 // No second chance even if I hit a boat  
+            if(item.myValue==false){        //  Check if this cell wasn't hit already
+                item.myValue = true;            // No it wasnt
                 console.log("I am clicked");
                 item.classList.add("iWasClicked");
                 sendIt(item);
-            }else{
-                console.log("I was AlreadyClicked");
-            }}else{console.log("not my turn")}
+            }else{                  
+                console.log("I was AlreadyClicked");  // Yes i hit it Already
+            }}else{console.log("not my turn")} // IT's not my turn now
         })
     })
 
