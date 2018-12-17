@@ -22,6 +22,10 @@ function setup() {
     gamestate = new GameState(socket);
     
     iGotAMessage();
+
+    socket.onclose = function () {
+        document.getElementById("whoNow").innerHTML="The OP left the Game";
+    };
 }
 
 
@@ -61,9 +65,15 @@ function myFunc4(that,value){
         
     })
     else{
-        window.addEventListener("keypress", function (event) {
-        event.stopPropagation();
-        }, true);
+        document.addEventListener("keypress", function(event) {
+            switch(event.code.toLocaleLowerCase()){
+                case"keyw":moveDown(that);break;
+                case"keys":moveUp(that);break;
+                case"keya":moveRight(that);break;
+                case"keyd":moveLeft(that);break;
+            }
+            
+        })
     }
 }
 
@@ -227,6 +237,8 @@ function sendIt5(){
     let ahit =JSON.stringify(aMessageToSend5);
     gamestate.sendmsg(ahit)
 }
+
+
 
 // pass an array
 function setAllCells(that,value){
@@ -436,6 +448,7 @@ function boat(size){
 function ready() {
     //create ready button
     var btn = document.createElement("BUTTON");
+    btn.setAttribute("class","btn-hover color-8")
     var t = document.createTextNode("READY");
     $(btn).attr('onclick', 'prepareStart()');    // ready onclick calls setup() function
     btn.appendChild(t);
@@ -460,12 +473,35 @@ function whosTurn() {
 }
 
 
+function ScreenSizeAlert() {
+    if ($(window).height() < 300 || $(window).width() < 1000)
+      alert('You screen size is bellow recommended.');
+}
+
+
+/* View in fullscreen */
+var elem = document.documentElement;
+
+function openFullscreen() {
+    console.log("I am here");
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+      elem.msRequestFullscreen();
+    }
+}
+
 //PRE READY STATE
 
 //prepare the boatArray
 function preReady(){
 console.log("Welcome");
 myFunc3();
+ScreenSizeAlert(); 
 
 
 var boat51 = new boat(5);

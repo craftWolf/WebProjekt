@@ -1,40 +1,9 @@
-// var express = require("express");
-// var http = require("http");
-// var websocket = require("ws")
-
-// var gameStatus = require("./statTracker");
-// var Game = require("./game");
-
-
-// var port = process.argv[2];
-// var app = express();
-
-// app.use(express.static(__dirname + "/public"));
-
-// app.get("/",function(req,res){
-//   res.sendFile("splash.html",{root: "./public"});
-// })
-
-// var server = http.createServer(app);
-// const wss = new websocket.Server({ server });
-
-// var websockets = {};//property: websocket, value: game
-
-// var currentGame = new Game(gameStatus.gamesInitialized++);
-// var connectionID = 0;//each websocket receives a unique ID
-
-// wss.on("connection",function connection(ws){
-
-// });
-
-// server.listen(port);
-
-
 var express = require("express");
 var http = require("http");
 var websocket = require("ws");
 var Game = require("./game");
 var gameStatus = require("./statTracker");
+var Stats = require("./public/javascripts/stats");
 
 
 var port = process.argv[2];
@@ -52,6 +21,7 @@ const wss = new websocket.Server({ server });
 var connectionID = 0; //unique ID per websocket
 var websockets = {};
 var currentGame = new Game(gameStatus.gamesInitialized++);
+var onlineStats = new Stats();
 
 wss.on('connection', function connection(ws) {
 
@@ -66,6 +36,7 @@ wss.on('connection', function connection(ws) {
 
   if (currentGame.hasTwoConnectedPlayers()) {
     currentGame = new Game(gameStatus.gamesInitialized++);
+    onlineStats.players+=2;
   }
   
 
@@ -82,7 +53,25 @@ wss.on('connection', function connection(ws) {
     }
   });
 
-  con.on("close", function (code) {
+  con.on('close', function (code) {
 
+    let gameObj = websockets[con.id];
+    console.log(con.id + " disconnected ...");
+    try {
+      gameObj.playerA.close();
+      gameObj.playerA = null;
+    }
+    catch (e) {
+      console.log("Player A closing: " + e);
+    }
+
+    try {
+      gameObj.playerB.close();
+      gameObj.playerB = null;
+    }
+    catch (e) {
+      console.log("Player B closing: " + e);
+    }
   });
+  
 });
