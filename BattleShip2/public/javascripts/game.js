@@ -250,6 +250,7 @@ function setAllCells(that,value){
 // MOVE UP FUNCTION
 function moveUp(ship){
 console.log("move up");
+if( validMoveUp(ship))
     ship.bodyBoat.forEach(function(item){
         if((item.Yposition>0)){
         console.log("Valid move Y"+item.Yposition)
@@ -271,6 +272,7 @@ console.log("move up");
 //MOVE DOWN FUNCTION
 function moveDown(ship){
 console.log("move down");
+if( validMoveDown(ship))
     ship.bodyBoat.forEach(function(item){
         if((item.Yposition<9)) {
         console.log("valid move Y"+item.Yposition)
@@ -291,7 +293,7 @@ console.log("move down");
 // MOVE LEFT FUNTION
 function moveLeft(ship){
 console.log("move left");
-    if(ship.bodyBoat[0].Xposition>0){
+    if(ship.bodyBoat[0].Xposition>0 && validMoveLeft(ship)){
     ship.bodyBoat.forEach(function(item){
         let $n =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition))[0].querySelector("div");
         console.log($n);
@@ -310,7 +312,7 @@ console.log("move left");
 // MOVE RIGHT FUNCTIONS
 function moveRight(ship){
 console.log("move right");
-    if(ship.bodyBoat[ship.size-1].Xposition<9){
+    if(ship.bodyBoat[ship.size-1].Xposition<9 && validMoveRight(ship)){
     ship.bodyBoat.forEach(function(item){
         let $n =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition))[0].querySelector("div");
         console.log($n);
@@ -327,53 +329,76 @@ console.log("move right");
 
 }
 
-//The followin 2 {} are me trying ToDo a valid move 
-{
-// function validMoveUp(ship){
-//     let valid =true;
-//     if(ship.bodyBoat[0].Yposition-2>=0){
-//         ship.bodyBoat.forEach(function(item){
-//             let $elemUp1 =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition-1))[0];
-//             let $elemUp2 =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition-2))[0];
-//             console.log($elemUp1);
-//             console.log($elemUp2);
-//             if (($elemUp1.hasChildNodes())||($elemUp2.hasChildNodes())){
-//                 valid = !valid;
-//             }
-//         })
-//     }else return true;
-//     return valid;
-// }
-}
-{
-// function validMove(ship){
-//     let valid = true
-//     // check the UPPER position
-//     ship.bodyBoat.forEach(function(item){
-//         let $elemUp =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition-2))[0];
-//         if($elemUp.hasChildNodes()) {valid=false; console.log("up nope")};
-//     })
-//     if(!valid) return false;
+function validMoveUp(ship){
 
-//     //check the LOWER position
-//     ship.bodyBoat.forEach(function(item){
-//         let $elemDown =  document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition+2))[0];
-//         if($elemDown.hasChildNodes()) {valid=false; console.log("down nope")};
-//     })
-//     if(!valid) return false;
+    let value = true;
+
+    // check up&down
+    ship.bodyBoat.forEach(function(item){
+        let up2= document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition-2))[0];
+        let up1= document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition-1))[0];
+        if(up1==undefined || up2==undefined){
+            value = true
+        }else if(up2.hasChildNodes() || up1.hasChildNodes()){
+            value = false;
+        }
+    })
+    if(!value) return false;
 
 
-//     //check the leftEXTREME
+    return value;
 
-//     //check the rightEXTREME
-
-//     //THE END of the check , the move is Valid
-//     return true;
-
-// }
 }
 
+function validMoveDown(ship){
+    let value = true;
+    ship.bodyBoat.forEach(function(item){
+        let down1=document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition+1))[0];
+        let down2=document.querySelectorAll(pathToX(item.Xposition)+pathToY(item.Yposition+2))[0];
 
+        if(down1==undefined || down2==undefined){
+            value = true
+        }else   if(down1.hasChildNodes() || down2.hasChildNodes()){
+            value = false;
+        }
+    })
+    if(!value) return false;
+
+    return value;
+
+}
+
+function validMoveLeft(ship){
+    let item = ship.bodyBoat[0]
+    let left1=document.querySelectorAll(pathToX(item.Xposition-2)+pathToY(item.Yposition-1))[0];
+    let left2=document.querySelectorAll(pathToX(item.Xposition-2)+pathToY(item.Yposition))[0];
+    let left3=document.querySelectorAll(pathToX(item.Xposition-2)+pathToY(item.Yposition+1))[0];
+
+    if(left1==undefined || left2==undefined ||left3==undefined){
+        return true
+    }
+
+    if(left1.hasChildNodes() || left2.hasChildNodes() ||left3.hasChildNodes()){
+        return false;
+    }
+    return true;
+
+}
+function validMoveRight(ship){
+    let item = ship.bodyBoat[ship.size-1];
+    let left1=document.querySelectorAll(pathToX(item.Xposition+2)+pathToY(item.Yposition-1))[0];
+    let left2=document.querySelectorAll(pathToX(item.Xposition+2)+pathToY(item.Yposition))[0];
+    let left3=document.querySelectorAll(pathToX(item.Xposition+2)+pathToY(item.Yposition+1))[0];
+
+    if(left1==undefined || left2==undefined ||left3==undefined){
+        return true
+    }
+
+    if(left1.hasChildNodes() || left2.hasChildNodes() ||left3.hasChildNodes()){
+        return false;
+    }
+    return true;
+}
 
 // GAME OBJECTS
 
