@@ -12,12 +12,8 @@ var app = express();
 app.use(express.static(__dirname + "/public"));
 var server = http.createServer(app).listen(port);
 
-// app.get("/", function (req, res) {
-//   res.sendFile("splash.html", { root: "./public" });
-// });
-
 app.get("/", function (req, res) {
-  res.render("splash.ejs",{gamesPlayedByYou:"hi"} );
+  res.sendFile("splash.html", { root: "./public" });
 });
 
 const wss = new websocket.Server({ server });
