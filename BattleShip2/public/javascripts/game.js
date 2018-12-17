@@ -123,6 +123,9 @@ function iGotAMessage(){
             console.log("u did it");
         }
 
+        if(msg.iWon){
+            alert("U won");
+        }
 
 
     }
@@ -134,12 +137,31 @@ function didOpHitAnyBoat(whatWasHit){
     let idToCheck = whatWasHit.substring(0,2);
     if (availableCells.includes(idToCheck)) { 
         //remove the hitten cell-id from ARRAY 
-        
+        // console.log("old lentgh "+availableCells.length);
+        // console.log(idToCheck)
+        let last =availableCells.length-1;
+        let index = availableCells.indexOf(idToCheck);
+        let temp = availableCells[last];
+        availableCells[last]=availableCells[index];
+        availableCells[index]=temp;
+        availableCells.pop();
+        // console.log(availableCells.pop());
+        // console.log("new lentgh "+availableCells.length);
+
+
         //include the hitten cell in the message
         aMessageToSend.wasHitten = idToCheck;
         let $elem = document.getElementById(idToCheck);
         $elem.childNodes[0].classList.add("wasHitten");
         sendIt2(whatWasHit);
+
+        // The Player  Lost 
+        // send a message to the opponent to show that he won
+        if(availableCells.length==0)   {
+            sendIt4();
+            alert("u LOST, LOOSER");
+
+        }
 
         return true;
     }else return false;
@@ -178,7 +200,14 @@ function sendIt3(){
     gamestate.sendmsg(ahit)
 
 }
-
+// message the oponent that he won the game
+function sendIt4(){
+    let aMessageToSend4 ={
+        iWon:true,
+    }
+    let ahit =JSON.stringify(aMessageToSend4);
+    gamestate.sendmsg(ahit)
+}
 
 // pass an array
 function setAllCells(that,value){
@@ -463,6 +492,7 @@ function prepareStart(){
                 sendIt(item);
             }else{                  
                 console.log("I was AlreadyClicked");  // Yes i hit it Already
+                myTurn=!myTurn
             }}else{console.log("not my turn")} // IT's not my turn now
         })
     })
