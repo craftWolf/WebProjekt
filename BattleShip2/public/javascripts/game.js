@@ -91,6 +91,7 @@ function iGotAMessage(){
             iAmPlayer = msg.data;
             console.log(iAmPlayer);
             if(iAmPlayer =="B") {
+                document.getElementById("whoNow").innerHTML="Wait For OP";
                 sendIt3();
                 alert("Game started");
             }
@@ -99,12 +100,21 @@ function iGotAMessage(){
         // The oponent is ready Both Players can start now
         // PlayerA can make the first move after this if-statement
         if(msg.enabled){
+            document.getElementById("whoNow").innerHTML="UR Turn";
             alert("Game started");
-            if(iAmPlayer =="A") myTurn=true;
-            else myTurn=false;
+            if(iAmPlayer =="A") {
+                myTurn=true;
+            }
+            else {
+                myTurn=false;
+            
+            }
         }
 
-        if(msg.isMyTurn) myTurn=true;
+        if(msg.displayWho) document.getElementById("whoNow").innerHTML="Ur Turn";
+
+
+        if(msg.isMyTurn) {myTurn=true;}
         // Check if u hit a boat
         if(msg.shotId != null){
             if(didOpHitAnyBoat(msg.shotId)){
@@ -152,8 +162,10 @@ function didOpHitAnyBoat(whatWasHit){
         //include the hitten cell in the message
         aMessageToSend.wasHitten = idToCheck;
         let $elem = document.getElementById(idToCheck);
-        $elem.childNodes[0].classList.add("wasHitten");
+        $elem.childNodes[0].classList.add("wasHittenOP");
         sendIt2(whatWasHit);
+
+        myTurn=true;
 
         // The Player  Lost 
         // send a message to the opponent to show that he won
@@ -206,6 +218,13 @@ function sendIt4(){
         iWon:true,
     }
     let ahit =JSON.stringify(aMessageToSend4);
+    gamestate.sendmsg(ahit)
+}
+function sendIt5(){
+    let aMessageToSend5 = {
+        displayWho:true
+    }
+    let ahit =JSON.stringify(aMessageToSend5);
     gamestate.sendmsg(ahit)
 }
 
@@ -426,6 +445,20 @@ function ready() {
     return true;
 }
 
+function whosTurn() {
+    //create ready button
+    let father = document.createElement("div")
+    father.setAttribute("id","ready2")
+    var h = document.createElement("H4");
+    h.setAttribute("id","whoNow")
+    h.innerHTML="Waiting<br>For the Second Player";
+    father.appendChild(h)
+    document.getElementById("here").appendChild(father);
+    //remove rotate box, ships 
+   
+    return true;
+}
+
 
 //PRE READY STATE
 
@@ -468,6 +501,7 @@ ready();
 // after Ready is Pressed
 function prepareStart(){
     document.getElementById("ready").remove();
+    whosTurn();
     console.log("GO");
     console.log(boatArray);
     //Stop any Event Listener
@@ -488,6 +522,8 @@ function prepareStart(){
             if(item.myValue==false){        //  Check if this cell wasn't hit already
                 item.myValue = true;            // No it wasnt
                 console.log("I am clicked");
+                document.getElementById("whoNow").innerHTML="Wait";
+                sendIt5();
                 item.classList.add("iWasClicked");
                 sendIt(item);
             }else{                  

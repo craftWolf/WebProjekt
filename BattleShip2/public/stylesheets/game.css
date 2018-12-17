@@ -58,7 +58,7 @@ body{
   z-index: 1;
 }
 
- .table-cell:hover{
+ .table-cell-oponent:hover{
   color: aqua;
   background: rgba(37, 88, 228, 0.904);
   z-index: 2;
@@ -87,6 +87,16 @@ body{
 .wasHitten{
   background: rgba(0, 0, 0, 0.849);
   border: 1px solid rgba(0, 0, 0, 0.685);
+  border-radius: 4px;
+}
+
+.wasHittenOP{
+  background: url(fire.png);
+  background-size: 85% 90%; 
+  background-repeat: no-repeat;
+  
+  /* background: rgba(0, 0, 0, 0.849);
+  border: 1px solid rgba(0, 0, 0, 0.685); */
   border-radius: 4px;
 }
 
@@ -214,4 +224,9 @@ input {
   left:50%;
   top: 40%;
 
+}
+#ready2{
+  position: fixed;
+  left:45%;
+  top: 40%; 
 }
