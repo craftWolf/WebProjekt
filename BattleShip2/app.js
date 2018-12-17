@@ -16,6 +16,12 @@ app.get("/", function (req, res) {
   res.sendFile("splash.html", { root: "./public" });
 });
 
+// app.get("/",function(req,res){
+//   res.render("splash.js",{
+//     gamesPlayedByYou: connectionID
+//   })
+// })
+
 const wss = new websocket.Server({ server });
 
 var connectionID = 0; //unique ID per websocket

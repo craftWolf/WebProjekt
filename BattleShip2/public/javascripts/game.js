@@ -498,10 +498,10 @@ function whosTurn() {
 }
 
 
-// function ScreenSizeAlert() {
-//     if ($(window).height() < 300 || $(window).width() < 1000)
-//       alert('You screen size is bellow recommended.');
-// }
+function ScreenSizeAlert() {
+    if ($(window).height() < 300 || $(window).width() < 1000)
+      alert('You screen size is bellow recommended.');
+}
 
 
 /* View in fullscreen */
@@ -526,7 +526,7 @@ function openFullscreen() {
 function preReady(){
 console.log("Welcome");
 myFunc3();
-// ScreenSizeAlert(); 
+ScreenSizeAlert(); 
 
 
 var boat51 = new boat(5);
